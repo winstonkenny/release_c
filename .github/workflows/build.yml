@@ -1,0 +1,50 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'Device/**'
+      - 'include/**'
+      - 'ldscripts/**'
+      - '.github/workflows/**'
+      - 'README*'
+
+jobs:
+  build:
+    if: github.repository == 'matismart/release'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+      with:
+        submodules: "recursive"
+        fetch-depth: 1
+
+    - name: Checkout private
+      uses: actions/checkout@v2
+      with:
+        repository: matismart/handle
+        token: ${{ secrets.MATISMART }}
+        path: src
+
+    - name: Install
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-arm-none-eabi cmake
+
+    - name: Build
+      if: success()
+      working-directory: src
+      run: |
+        sudo chmod +x ./build.sh
+        sudo bash ./build.sh
+        mkdir -p ./output &&  cp  build/*.bin "$_"
+
+    - name: Upload
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: matismart_build
+        path: src/output/

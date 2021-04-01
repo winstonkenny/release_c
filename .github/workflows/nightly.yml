@@ -1,0 +1,60 @@
+name: nightly
+
+on:
+  push:
+    branches:
+      - master
+# on:
+#   schedule:
+#     - cron: '0 3 * * *' # run every day at 3AM
+
+
+jobs:
+  build:
+    if: github.repository == 'matismart/release'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-16.04]
+        gcc-arm-none-eabi:
+          - "2020-q4"
+          - "2016-q3"
+
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+      with:
+        submodules: "recursive"
+        fetch-depth: 1
+
+    - name: Checkout private
+      uses: actions/checkout@v2
+      with:
+        repository: matismart/handle
+        token: ${{ secrets.MATISMART }}
+        path: src
+
+    - name: Install Cmake
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake
+
+    - name: build by gcc-arm-none-eabi 2020-q4
+      working-directory: src
+      if: matrix.gcc-arm-none-eabi == '2020-q4'
+      run: |
+        wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+        tar -xf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+        mkdir build && cd build
+        cmake -DDEV_TYPE=MT84 -D CROSS_COMPILER_PATH=../gcc-arm-none-eabi-10-2020-q4-major .. && make
+
+    - name: build by gcc-arm-none-eabi 2016-q3
+      working-directory: src
+      if: matrix.gcc-arm-none-eabi == '2016-q3'
+      run: |
+        wget https://launchpad.net/gcc-arm-embedded/5.0/5-2016-q3-update/+download/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2
+        tar -xf gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2
+        mkdir build && cd build
+        cmake -DDEV_TYPE=MT84 -D CROSS_COMPILER_PATH=../gcc-arm-none-eabi-5_4-2016q3 .. && make
+

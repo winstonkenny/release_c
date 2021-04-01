@@ -1,0 +1,87 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.repository == 'matismart/release'
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 1
+
+      - name: Checkout private
+        uses: actions/checkout@v2
+        with:
+          repository: matismart/handle
+          token: ${{ secrets.MATISMART }}
+          path: src
+
+      - name: Install
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi cmake
+
+      - name: Build
+        working-directory: src
+        run: |
+          sudo chmod +x ./build.sh
+          sudo bash ./build.sh
+          echo "# Good things have arrived" > CHANGELOG.txt
+          echo ${{ github.sha }} > release.txt
+          zip matismart.zip build/*.bin release.txt CHANGELOG.txt
+
+      - name: Create Release
+        if: success() && startsWith(github.ref, 'refs/tags/')
+        id: create_release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.MATISMART }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.MATISMART }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: src/matismart.zip
+          asset_name: matismart.zip
+          asset_content_type: application/x-zip
+
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{secrets.MAIL_USERNAME}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: Github Actions job result
+          # Literal body:
+          body: Build job of ${{github.repository}} completed successfully!
+          # Read file contents as body:
+          # body: file://README.md
+          to: qitas@qitas.cn,qitas@hotmail.com
+          from: Qitas # <user@example.com>
+          # Optional carbon copy recipients
+          cc: tang@qitas.cn
+          # Optional blind carbon copy recipients
+          bcc: qitast@l63.com
+          # Optional content type (defaults to text/plain):
+          content_type: text/html
+          # Optional converting Markdown to HTML (set content_type to text/html too):
+          convert_markdown: true
+          # Optional attachments:
+          attachments: src/matismart.zip
