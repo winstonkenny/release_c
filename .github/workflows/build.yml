@@ -38,14 +38,11 @@ jobs:
       run: |
         sudo chmod +x ./build.sh
         sudo bash ./build.sh
-        # mkdir -p ./output &&  cp  main "$_"
-        echo thisShow
-        pwd
-        ls -la
+        mkdir -p ./output &&  cp  main "$_"
 
-    # - name: Upload
-    #   if: success()
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: winstonkenny_build
-    #     path: src/output/
+    - name: Upload
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: winstonkenny_build
+        path: src/output/
