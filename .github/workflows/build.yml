@@ -29,8 +29,8 @@ jobs:
 
     - name: Install
       run: |
-        sudo apt-get update
-        sudo apt-get install -y gcc-arm-none-eabi cmake
+        # sudo apt-get update
+        # sudo apt-get install -y gcc-arm-none-eabi cmake
 
     - name: Build
       if: success()
