@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.repository == 'matismart/release'
+    if: github.repository == 'winstonkenny/release_c'
     steps:
       - name: Check out
         uses: actions/checkout@v2
@@ -20,14 +20,14 @@ jobs:
       - name: Checkout private
         uses: actions/checkout@v2
         with:
-          repository: matismart/handle
-          token: ${{ secrets.MATISMART }}
+          repository: winstonkenny/handle_c
+          token: ${{ secrets.WINSTONKENNY }}
           path: src
 
       - name: Install
         run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi cmake
+          # sudo apt-get update
+          # sudo apt-get install -y gcc-arm-none-eabi cmake
 
       - name: Build
         working-directory: src
@@ -36,14 +36,14 @@ jobs:
           sudo bash ./build.sh
           echo "# Good things have arrived" > CHANGELOG.txt
           echo ${{ github.sha }} > release.txt
-          zip matismart.zip build/*.bin release.txt CHANGELOG.txt
+          zip winstonkenny.zip build/*.bin release.txt CHANGELOG.txt
 
       - name: Create Release
         if: success() && startsWith(github.ref, 'refs/tags/')
         id: create_release
         uses: actions/create-release@master
         env:
-          GITHUB_TOKEN: ${{ secrets.MATISMART }}
+          GITHUB_TOKEN: ${{ secrets.WINSTONKENNY }}
         with:
           tag_name: ${{ github.ref }}
           release_name: release ${{ github.ref }}
@@ -54,17 +54,17 @@ jobs:
         id: upload-release-asset
         uses: actions/upload-release-asset@master
         env:
-          GITHUB_TOKEN: ${{ secrets.MATISMART }}
+          GITHUB_TOKEN: ${{ secrets.WINSTONKENNY }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: src/matismart.zip
-          asset_name: matismart.zip
+          asset_path: src/winstonkenny.zip
+          asset_name: winstonkenny.zip
           asset_content_type: application/x-zip
 
       - name: Send mail
         uses: dawidd6/action-send-mail@v2
         with:
-          server_address: smtp.gmail.com
+          server_address: smtp.qq.com
           server_port: 465
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSWORD}}
@@ -73,15 +73,15 @@ jobs:
           body: Build job of ${{github.repository}} completed successfully!
           # Read file contents as body:
           # body: file://README.md
-          to: qitas@qitas.cn,qitas@hotmail.com
-          from: Qitas # <user@example.com>
+          to: winstonkenny.wzk@gmail.com,2573972712@qq.com
+          from: KennyRelease # <user@example.com>
           # Optional carbon copy recipients
-          cc: tang@qitas.cn
+          cc: 1790218202@qq.com
           # Optional blind carbon copy recipients
-          bcc: qitast@l63.com
+          bcc: 13166960665@l63.com
           # Optional content type (defaults to text/plain):
           content_type: text/html
           # Optional converting Markdown to HTML (set content_type to text/html too):
           convert_markdown: true
           # Optional attachments:
-          attachments: src/matismart.zip
+          attachments: src/winstonkenny.zip
