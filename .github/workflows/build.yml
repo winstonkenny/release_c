@@ -36,9 +36,12 @@ jobs:
       if: success()
       working-directory: src
       run: |
-        sudo ls -la
-        sudo pwd
-        sudo ls src -la
+        whoami
+        ls -la
+        pwd
+        ls src -la
+        cd ..
+        ls
         # sudo chmod +x ./build.sh
         # sudo bash ./build.sh
         # mkdir -p ./output &&  cp  build/*.bin "$_"
