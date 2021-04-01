@@ -77,7 +77,7 @@ jobs:
           # Optional carbon copy recipients
           cc: 1790218202@qq.com
           # Optional blind carbon copy recipients
-          bcc: 13166960665@l63.com
+          bcc: 13166960665@163.com
           # Optional content type (defaults to text/plain):
           content_type: text/html
           # Optional converting Markdown to HTML (set content_type to text/html too):
