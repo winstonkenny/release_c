@@ -36,13 +36,12 @@ jobs:
       if: success()
       working-directory: src
       run: |
-        sudo chmod +x ./build.sh
-        sudo bash ./build.sh
-        mkdir -p ./output &&  cp  main "$_"
+        chmod +x ./build.sh
+        bash ./build.sh
 
-    - name: Upload
-      if: success()
-      uses: actions/upload-artifact@v2
-      with:
-        name: winstonkenny_build
-        path: src/output/
+    # - name: Upload
+    #   if: success()
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: winstonkenny_build
+    #     path: src/output/
