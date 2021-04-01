@@ -34,17 +34,11 @@ jobs:
 
     - name: Build
       if: success()
-      working-directory: handle_c
+      # working-directory: src
       run: |
-        ls -la
-        pwd
-        ls src -la
-        cd ..
-        pwd
-        ls -la
-        # sudo chmod +x ./build.sh
-        # sudo bash ./build.sh
-        # mkdir -p ./output &&  cp  build/*.bin "$_"
+        sudo chmod +x ./build.sh
+        sudo bash ./build.sh
+        mkdir -p ./output &&  cp  build/*.bin "$_"
 
     # - name: Upload
     #   if: success()
