@@ -27,21 +27,21 @@ jobs:
         token: ${{ secrets.WINSTONKENNY }}
         path: src
 
-    - name: Install
-      run: |
-        # sudo apt-get update
-        # sudo apt-get install -y gcc-arm-none-eabi cmake
+    # - name: Install
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y gcc-arm-none-eabi cmake
 
     - name: Build
       if: success()
-      working-directory: src
+      # working-directory: src
       run: |
-        whoami
         ls -la
         pwd
         ls src -la
         cd ..
-        ls
+        pwd
+        ls -la
         # sudo chmod +x ./build.sh
         # sudo bash ./build.sh
         # mkdir -p ./output &&  cp  build/*.bin "$_"

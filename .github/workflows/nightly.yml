@@ -1,9 +1,9 @@
 name: nightly
 
-# on:
-#   push:
-#     branches:
-#       - master
+on:
+  push:
+    branches:
+      - aaa
 # on:
 #   schedule:
 #     - cron: '0 3 * * *' # run every day at 3AM
@@ -57,4 +57,3 @@ jobs:
         tar -xf gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2
         mkdir build && cd build
         cmake -DDEV_TYPE=MT84 -D CROSS_COMPILER_PATH=../gcc-arm-none-eabi-5_4-2016q3 .. && make
-
