@@ -34,7 +34,7 @@ jobs:
 
     - name: Build
       if: success()
-      # working-directory: src
+      working-directory: src
       run: |
         ls -la
         pwd
