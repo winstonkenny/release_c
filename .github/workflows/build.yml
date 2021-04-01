@@ -38,7 +38,7 @@ jobs:
       run: |
         sudo chmod +x ./build.sh
         sudo bash ./build.sh
-        mkdir -p ./output &&  cp  main "$_"
+        # mkdir -p ./output &&  cp  main "$_"
         echo thisShow
         pwd
         ls -la
