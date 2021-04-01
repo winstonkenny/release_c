@@ -24,7 +24,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: winstonkenny/handle_c
-        token: ${{ secrets.MATISMART }}
+        token: ${{ secrets.WINSTONKENNY }}
         path: src
 
     - name: Install
@@ -44,5 +44,5 @@ jobs:
       if: success()
       uses: actions/upload-artifact@v2
       with:
-        name: matismart_build
+        name: winstonkenny_build
         path: src/output/
