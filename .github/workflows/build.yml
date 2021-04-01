@@ -6,14 +6,12 @@ on:
       - master
     paths:
       - 'Device/**'
-      - 'include/**'
-      - 'ldscripts/**'
       - '.github/workflows/**'
       - 'README*'
 
 jobs:
   build:
-    if: github.repository == 'matismart/release'
+    if: github.repository == 'winstonkenny/release_c'
     runs-on: ubuntu-latest
     steps:
     - name: Check out
@@ -25,7 +23,7 @@ jobs:
     - name: Checkout private
       uses: actions/checkout@v2
       with:
-        repository: matismart/handle
+        repository: winstonkenny/handle_c
         token: ${{ secrets.MATISMART }}
         path: src
 
