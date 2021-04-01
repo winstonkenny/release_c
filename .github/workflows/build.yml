@@ -38,7 +38,10 @@ jobs:
       run: |
         sudo chmod +x ./build.sh
         sudo bash ./build.sh
-        mkdir -p ./output &&  cp  build/*.bin "$_"
+        mkdir -p ./output &&  cp  main "$_"
+        echo thisShow
+        pwd
+        ls -la
 
     # - name: Upload
     #   if: success()
